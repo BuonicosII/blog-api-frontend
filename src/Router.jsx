@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AllPosts from "./components/allposts/allposts";
 import Post from "./components/post/post"
+import Header from "./components/header/header"
+import SignUp from "./components/sign-up-form/sign-up-form";
 
 async function retrievePostAndComments (pathname) {
 
@@ -26,13 +28,21 @@ export default function Router () {
     const router = createBrowserRouter([
         {
             path: "/", 
-            element: <AllPosts />,
+            element: <><Header /><AllPosts /></>,
             loader: retrievePosts
         },
         {
             path: "/:id",
-            element: <Post />, 
+            element: <><Header /><Post /></>, 
             loader: ({params}) => retrievePostAndComments(params.id)
+        },
+        {
+            path: "/sign-up",
+            element: <><Header /><SignUp /></>
+        },
+        {
+            path: "/log-in",
+            element: <><Header /></>
         }
     ])
 
