@@ -14,12 +14,20 @@ async function retrievePostAndComments (pathname) {
     return retrievedPostAndComments
 }
 
+async function retrievePosts () {
+    const postsJson = await fetch('http://localhost:3000/posts');
+    const retrievedPosts = await postsJson.json()
+
+    return retrievedPosts
+}
+
 export default function Router () {
 
     const router = createBrowserRouter([
         {
             path: "/", 
-            element: <AllPosts />
+            element: <AllPosts />,
+            loader: retrievePosts
         },
         {
             path: "/:id",

@@ -1,19 +1,9 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 export default function AllPosts () {
-    const [posts, setPosts] = useState([])
 
-    async function retrievePosts () {
-        const postsJson = await fetch('http://localhost:3000/posts');
-        const retrievedPosts = await postsJson.json()
-        setPosts(retrievedPosts)
-    }
+    const posts = useLoaderData()
 
-    useEffect( () => {
-        retrievePosts()
-    }, [])
-    
     return (
         <div>
             {posts.map(post => {
