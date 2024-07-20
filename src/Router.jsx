@@ -3,6 +3,7 @@ import AllPosts from "./components/allposts/allposts";
 import Post from "./components/post/post"
 import Header from "./components/header/header"
 import SignUp from "./components/sign-up-form/sign-up-form";
+import LogIn from "./components/log-in/log-in";
 
 async function retrievePostAndComments (pathname) {
 
@@ -42,7 +43,7 @@ export default function Router () {
         },
         {
             path: "/log-in",
-            element: <><Header /></>
+            element: <><Header /><LogIn /></>
         }
     ])
 

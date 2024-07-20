@@ -6,7 +6,7 @@ export default function Header () {
             <nav>
                 <Link to="/">Home</Link>
                 <Link to="/sign-up">Sign Up</Link>
-                <Link to="/">Log in</Link>
+                <Link to="/log-in">Log in</Link>
             </nav>
         </header>
     )
