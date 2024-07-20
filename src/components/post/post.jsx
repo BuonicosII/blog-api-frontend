@@ -8,7 +8,21 @@ export default function Post () {
 
     console.log(post, comments)
 
-    return <div>
-        Hi
-    </div>
+    return (
+        <>
+            <div>
+                <h1>{post.title}</h1>
+                <p>posted on {post.timeStamp} by {post.user.username}</p>
+                <p>{post.text}</p>
+            </div>
+            {comments.map(comment => {
+                return (
+                    <div key={comment.id}>
+                        <p>On {comment.timeStamp} {comment.user.username} wrote</p>
+                        <p>{comment.text}</p>
+                    </div>
+                )
+            })}
+        </>
+    )
 }
