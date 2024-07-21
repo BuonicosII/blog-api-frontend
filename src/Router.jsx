@@ -24,18 +24,40 @@ async function retrievePosts () {
     return retrievedPosts
 }
 
+async function userLogged () {
+
+        if (localStorage.getItem("token")) {
+            const userJson = await fetch ('http://localhost:3000/users/user', 
+                {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`}})
+    
+            const user = await userJson.json()
+    
+            return user
+        } else {
+            return null
+        }
+}
+
 export default function Router () {
 
     const router = createBrowserRouter([
         {
             path: "/", 
             element: <><Header /><AllPosts /></>,
-            loader: retrievePosts
+            loader: async () => {
+                const data = await Promise.all([userLogged(), retrievePosts()])
+                return data
+            }
+            
+            
         },
         {
             path: "/:id",
             element: <><Header /><Post /></>, 
-            loader: ({params}) => retrievePostAndComments(params.id)
+            loader: async ({params}) => {
+                const data = await Promise.all([userLogged(), retrievePostAndComments(params.id)])
+                return data
+            }
         },
         {
             path: "/sign-up",
@@ -43,7 +65,11 @@ export default function Router () {
         },
         {
             path: "/log-in",
-            element: <><Header /><LogIn /></>
+            element: <><Header /><LogIn /></>,
+            loader: async () => {
+                const data = await Promise.all([userLogged()])
+                return data
+            }
         }
     ])
 

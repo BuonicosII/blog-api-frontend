@@ -2,7 +2,7 @@ import { Link, useLoaderData } from "react-router-dom";
 
 export default function AllPosts () {
 
-    const posts = useLoaderData()
+    const posts = useLoaderData()[1]
 
     return (
         <div>
