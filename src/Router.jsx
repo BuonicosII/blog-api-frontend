@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
 import AllPosts from "./components/allposts/allposts";
 import Post from "./components/post/post"
 import Header from "./components/header/header"
@@ -64,6 +64,11 @@ export default function Router () {
             element: <><Header /><SignUp /></>,
             loader: async () => {
                 const data = await Promise.all([userLogged()])
+
+                if (data[0]) {
+                    return redirect("/")
+                }
+
                 return data
             }
         },
@@ -72,6 +77,11 @@ export default function Router () {
             element: <><Header /><LogIn /></>,
             loader: async () => {
                 const data = await Promise.all([userLogged()])
+
+                if (data[0]) {
+                    return redirect("/")
+                }
+                
                 return data
             }
         }
