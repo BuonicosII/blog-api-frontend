@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import style from "./log-in.module.css"
 
 export default function LogIn () {
 
@@ -43,12 +44,19 @@ export default function LogIn () {
     }
 
     return (
-        <form onSubmit={formSubmit}>
-            <label htmlFor="username">Username</label>
-            <input onChange={formUpdate} type="text" name="username" id="username" value={user.username}/>
-            <label htmlFor="password">Password</label>
-            <input onChange={formUpdate} type="password" id="password" name="password" value={user.password}/>
-            <button type="submit">Submit</button>
-        </form>
+        <div className={style.formHolder}>
+            <form onSubmit={formSubmit}>
+                <div className={style.divForm}>
+                    <label htmlFor="username">Username</label>
+                    <input onChange={formUpdate} type="text" name="username" id="username" value={user.username}/>
+                </div>
+                <div className={style.divForm}>
+                    <label htmlFor="password">Password</label>
+                    <input onChange={formUpdate} type="password" id="password" name="password" value={user.password}/>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
     )
 }

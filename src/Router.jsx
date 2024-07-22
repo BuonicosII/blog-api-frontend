@@ -61,7 +61,11 @@ export default function Router () {
         },
         {
             path: "/sign-up",
-            element: <><Header /><SignUp /></>
+            element: <><Header /><SignUp /></>,
+            loader: async () => {
+                const data = await Promise.all([userLogged()])
+                return data
+            }
         },
         {
             path: "/log-in",

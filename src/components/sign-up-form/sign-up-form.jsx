@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import style from "./sign-up.module.css"
 
 export default function SignUp () {
 
@@ -47,20 +48,34 @@ export default function SignUp () {
     }
 
     return (
-        <form onSubmit={formSubmit}>
-            <label htmlFor="firstName">First Name</label>
-            <input onChange={formUpdate} type="text" id="firstName" name="firstName" value={user.firstName}/>
-            <label htmlFor="lastName">Last Name</label>
-            <input onChange={formUpdate} type="text" id="lastName" name="lastName" value={user.lastName}/>
-            <label htmlFor="email">E-mail</label>
-            <input onChange={formUpdate} type="email" id="email" name="email" value={user.email}/>
-            <label htmlFor="password">Password</label>
-            <input onChange={formUpdate} type="password" id="password" name="password" value={user.password}/>
-            <label htmlFor="passwordConfirm">Confirm password</label>
-            <input onChange={formUpdate} type="password" name="passwordConfirm" id="passwordConfirm" value={user.passwordConfirm}/>
-            <label htmlFor="username"></label>
-            <input onChange={formUpdate} type="text" name="username" id="username" value={user.username}/>
-            <button type="submit">Submit</button>
-        </form>
+        <div className={style.formHolder}>
+            <form onSubmit={formSubmit}>
+                <div className={style.divForm}>
+                    <label htmlFor="firstName">First Name</label>
+                    <input onChange={formUpdate} type="text" id="firstName" name="firstName" value={user.firstName}/>
+                </div>
+                <div className={style.divForm}>
+                    <label htmlFor="lastName">Last Name</label>
+                    <input onChange={formUpdate} type="text" id="lastName" name="lastName" value={user.lastName}/>
+                </div>
+                <div className={style.divForm}>
+                    <label htmlFor="email">E-mail</label>
+                    <input onChange={formUpdate} type="email" id="email" name="email" value={user.email}/>
+                </div>
+                <div className={style.divForm}>
+                    <label htmlFor="password">Password</label>
+                    <input onChange={formUpdate} type="password" id="password" name="password" value={user.password}/>
+                </div>
+                <div className={style.divForm}>
+                    <label htmlFor="passwordConfirm">Confirm password</label>
+                    <input onChange={formUpdate} type="password" name="passwordConfirm" id="passwordConfirm" value={user.passwordConfirm}/>
+                </div>
+                <div className={style.divForm}>
+                    <label htmlFor="username">Username</label>
+                    <input onChange={formUpdate} type="text" name="username" id="username" value={user.username}/>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     )
 }

@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom"
-
+import style from "./post.module.css"
 
 export default function Post () {
 
@@ -9,7 +9,7 @@ export default function Post () {
 
     if (user) {
         return (
-            <>
+            <div className={style.postFeed}>
                 <div>
                     <h1>{post.title}</h1>
                     <p>posted on {post.timeStamp} by {post.user.username}</p>
@@ -26,11 +26,11 @@ export default function Post () {
                         </div>
                     )
                 })}
-            </>
+            </div>
         )
     } else {
         return (
-            <>
+            <div className={style.postFeed}>
                 <div>
                     <h1>{post.title}</h1>
                     <p>posted on {post.timeStamp} by {post.user.username}</p>
@@ -44,7 +44,7 @@ export default function Post () {
                         </div>
                     )
                 })}
-            </>
+            </div>
         )
     }
 }
