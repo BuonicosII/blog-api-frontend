@@ -2,6 +2,7 @@ import { useLoaderData, useNavigate } from "react-router-dom"
 import style from "./post.module.css"
 import { useState } from "react"
 import PropTypes from 'prop-types'
+import { format } from "date-fns"
 
 function CommentForm ({ postid }) {
     const navigate = useNavigate()
@@ -45,9 +46,11 @@ function CommentForm ({ postid }) {
 
     return (
         <form onSubmit={formSubmit}>
-            <label htmlFor="comment">Your Comment</label>
-            <input onChange={formUpdate} type="text" name="comment" id="comment" value={comment.text}/>
-            <input type="hidden" name="postid" id="postid" value={comment.post}/>
+            <div className={style.divForm}>
+                <label htmlFor="comment">Your Comment</label>
+                <input onChange={formUpdate} type="text" name="comment" id="comment" value={comment.text}/>
+                <input type="hidden" name="postid" id="postid" value={comment.post}/>
+            </div>
             <button type="submit">Submit</button>
         </form>
     )
@@ -66,18 +69,18 @@ export default function Post () {
             <div className={style.postFeed}>
                 <div>
                     <h1>{post.title}</h1>
-                    <p>posted on {post.timeStamp} by {post.user.username}</p>
+                    <p>posted on {format(post.timeStamp, 'MMMM do')} by {post.user.username}</p>
                     <p>{post.text}</p>
+                    <CommentForm postid={post._id} />
+                    {comments.map(comment => {
+                        return (
+                            <div key={comment.id}>
+                                <p>On {format(comment.timeStamp, 'MMMM do')} {comment.user.username} wrote</p>
+                                <p>{comment.text}</p>
+                            </div>
+                        )
+                    })}
                 </div>
-                <CommentForm postid={post._id} />
-                {comments.map(comment => {
-                    return (
-                        <div key={comment.id}>
-                            <p>On {comment.timeStamp} {comment.user.username} wrote</p>
-                            <p>{comment.text}</p>
-                        </div>
-                    )
-                })}
             </div>
         )
     } else {
