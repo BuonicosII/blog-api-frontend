@@ -48,7 +48,7 @@ function CommentForm ({ postid }) {
         <form onSubmit={formSubmit}>
             <div className={style.divForm}>
                 <label htmlFor="comment">Your Comment</label>
-                <input onChange={formUpdate} type="text" name="comment" id="comment" value={comment.text}/>
+                <textarea onChange={formUpdate} name="comment" id="comment" value={comment.text}></textarea>
                 <input type="hidden" name="postid" id="postid" value={comment.post}/>
             </div>
             <button type="submit">Submit</button>
@@ -88,17 +88,17 @@ export default function Post () {
             <div className={style.postFeed}>
                 <div>
                     <h1>{post.title}</h1>
-                    <p>posted on {post.timeStamp} by {post.user.username}</p>
+                    <p>posted on {format(post.timeStamp, 'MMMM do')} by {post.user.username}</p>
                     <p>{post.text}</p>
+                    {comments.map(comment => {
+                        return (
+                            <div key={comment.id}>
+                                <p>On {format(comment.timeStamp, 'MMMM do')} {comment.user.username} wrote</p>
+                                <p>{comment.text}</p>
+                            </div>
+                        )
+                    })}
                 </div>
-                {comments.map(comment => {
-                    return (
-                        <div key={comment.id}>
-                            <p>On {comment.timeStamp} {comment.user.username} wrote</p>
-                            <p>{comment.text}</p>
-                        </div>
-                    )
-                })}
             </div>
         )
     }

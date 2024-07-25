@@ -10,3 +10,9 @@
     gap: 8px;
     margin-bottom: 8px;
 }
+
+textarea {
+    resize: vertical; 
+    max-height: 200px;
+    min-height: 30px;
+}
