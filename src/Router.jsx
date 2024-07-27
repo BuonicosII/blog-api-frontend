@@ -25,6 +25,24 @@ async function retrievePosts () {
     return retrievedPosts
 }
 
+async function retrieveUserPosts (userid) {
+    const postsJson = await fetch('http://localhost:3000/posts');
+    const retrievedPosts = await postsJson.json()
+
+    const retrievedUserPosts = retrievedPosts.filter(( post ) =>  post.user === userid )
+
+    return retrievedUserPosts
+}
+
+async function retrieveUserComments (userid) {
+    const commentsJson = await fetch('http://localhost:3000/comments');
+    const retrievedComments = await commentsJson.json()
+
+    const retrievedUserComments = retrievedComments.filter(( comment ) =>  comment.user._id === userid )
+
+    return retrievedUserComments
+}
+
 async function userLogged () {
 
         if (localStorage.getItem("token")) {
@@ -57,6 +75,15 @@ export default function Router () {
             element: <><Header /><Post /></>, 
             loader: async ({params}) => {
                 const data = await Promise.all([userLogged(), retrievePostAndComments(params.id)])
+                return data
+            }
+        },
+        {
+            path: "user/:id",
+            element: <><Header /></>,
+            loader: async ({params}) => {
+                const data = await Promise.all([userLogged(), retrieveUserPosts(params.id), retrieveUserComments(params.id)])
+                console.log(data)
                 return data
             }
         },
