@@ -4,6 +4,10 @@
     align-items: center;
 }
 
+.postHolder {
+    width: 50%;
+}
+
 .divForm {
     display: flex;
     flex-direction: column;
@@ -15,4 +19,14 @@ textarea {
     resize: vertical; 
     max-height: 200px;
     min-height: 30px;
+}
+
+.comment {
+    width: 50%;
+    padding: 8px;
+}
+
+.serviceText {
+    color: grey;
+    font-size: 15px;
 }
