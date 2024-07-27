@@ -19,7 +19,7 @@ export default function Header () {
             <header>
                 <nav>
                     <span className={style.home}><Link to="/">Home</Link></span>
-                    {user.author && <span><Link to="/">New Post</Link></span>}
+                    {user.author && <span><Link to="/new-post">New Post</Link></span>}
                     <span>{user.username}</span>
                     <Link onClick={()=> {localStorage.removeItem("token")}}>Log out</Link>
                 </nav>

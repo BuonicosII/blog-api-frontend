@@ -1,0 +1,21 @@
+.divForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.checkboxDiv {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.formHolder {
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    padding: 8px;
+}

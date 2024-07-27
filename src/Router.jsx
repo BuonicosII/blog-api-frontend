@@ -4,6 +4,7 @@ import Post from "./components/post/post"
 import Header from "./components/header/header"
 import SignUp from "./components/sign-up-form/sign-up-form";
 import LogIn from "./components/log-in/log-in";
+import CreatePost from "./components/create-post/create-post";
 
 async function retrievePostAndComments (pathname) {
 
@@ -79,6 +80,19 @@ export default function Router () {
                 const data = await Promise.all([userLogged()])
 
                 if (data[0]) {
+                    return redirect("/")
+                }
+                
+                return data
+            }
+        },
+        {
+            path: "/new-post",
+            element: <><Header /><CreatePost /></>,
+            loader: async () => {
+                const data = await Promise.all([userLogged()])
+
+                if (data[0].author === false) {
                     return redirect("/")
                 }
                 
