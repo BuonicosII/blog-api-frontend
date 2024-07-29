@@ -1,0 +1,24 @@
+.columnHolder {
+    display: flex;
+    gap: 100px;
+    justify-content: space-between;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.editDiv {
+    display: flex;
+    gap: 8px;
+    max-width: 400px
+}
+
+.editMain {
+    margin-right: auto;
+}

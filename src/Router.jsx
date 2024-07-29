@@ -5,6 +5,7 @@ import Header from "./components/header/header"
 import SignUp from "./components/sign-up-form/sign-up-form";
 import LogIn from "./components/log-in/log-in";
 import CreatePost from "./components/create-post/create-post";
+import UserView from "./components/userview/userview";
 
 async function retrievePostAndComments (pathname) {
 
@@ -80,7 +81,7 @@ export default function Router () {
         },
         {
             path: "user/:id",
-            element: <><Header /></>,
+            element: <><Header /><UserView /></>,
             loader: async ({params}) => {
                 const data = await Promise.all([userLogged(), retrieveUserPosts(params.id), retrieveUserComments(params.id)])
                 console.log(data)
