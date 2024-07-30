@@ -1,13 +1,14 @@
-import { useLoaderData, useNavigate } from "react-router-dom"
+import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom"
 import style from "./post.module.css"
 import { useState } from "react"
 import PropTypes from 'prop-types'
 import { format } from "date-fns"
+import CreatePost from "../create-post/create-post"
 
 function CommentForm ({ postid }) {
     const navigate = useNavigate()
     const [comment, setComment] = useState({ postid: postid })
-    console.log(comment)
+
 
     function formUpdate(e) {
         
@@ -64,9 +65,13 @@ export default function Post () {
     const post = useLoaderData()[1][0]
     const comments = useLoaderData()[1][1]
     const user = useLoaderData()[0]
+    const [searchParams] = useSearchParams()
 
+    const editMode = searchParams.get('edit') === "true"
 
-    if (user) {
+    if (user && user._id === post.user._id && user.author && editMode) {
+        return <CreatePost postToEdit={post}/>
+    } else if (user) {
         return (
             <div className={style.postFeed}>
                 <div className={style.postHolder}>

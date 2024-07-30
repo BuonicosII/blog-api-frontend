@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import style from "./create-post.module.css"
+import PropTypes from 'prop-types'
 
-export default function CreatePost () {
+export default function CreatePost ( { postToEdit }) {
 
-    const [post, setPost] = useState({published: false})
+    const [post, setPost] = useState( postToEdit ? postToEdit : {published: false})
     const navigate = useNavigate()
 
     function formUpdate(e) {
@@ -16,7 +17,6 @@ export default function CreatePost () {
             title: document.querySelector("#title").value,
             text: document.querySelector("#text").value,
         }
-        console.log(newPost)
         setPost(newPost)
 
     }
@@ -27,7 +27,6 @@ export default function CreatePost () {
             ...post,
             published: !post.published
         }
-        console.log(newPost)
         setPost(newPost)
     }
 
@@ -36,7 +35,7 @@ export default function CreatePost () {
 
         try {
             const json = await fetch('http://localhost:3000/posts', { 
-                method: 'POST', 
+                method: postToEdit ? 'PUT' : 'POST', 
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${JSON.parse(localStorage.getItem("token"))}`},
                 body: JSON.stringify(post)
             })
@@ -75,4 +74,8 @@ export default function CreatePost () {
             </form>
         </div>
     )
+}
+
+CreatePost.propTypes = {
+    postToEdit: PropTypes.object
 }

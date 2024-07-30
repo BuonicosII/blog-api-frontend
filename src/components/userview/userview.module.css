@@ -16,7 +16,7 @@
 .editDiv {
     display: flex;
     gap: 8px;
-    max-width: 400px
+    width: 300px
 }
 
 .editMain {

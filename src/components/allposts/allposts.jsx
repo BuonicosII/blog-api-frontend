@@ -8,11 +8,13 @@ export default function AllPosts () {
     return (
         <div className={style.feed}>
             {posts.map(post => {
-                return <div key={post._id}>
-                    <Link to={"/"+ post._id}>
-                    <p>{post.title}</p>
-                    </Link>
+                if (post.published) {
+                    return <div key={post._id}>
+                        <Link to={"/"+ post._id}>
+                            <p>{post.title}</p>
+                        </Link>
                     </div>
+                }
             })}
         </div>
     )

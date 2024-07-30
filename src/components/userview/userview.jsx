@@ -20,8 +20,10 @@ export default function UserView () {
                     return (
                         <div key={post._id} className={style.editDiv}>
                             <span className={style.editMain}>{title}</span>
-                            <Link><span>Edit</span></Link>
+                            <span><i>{post.published ? "(Public)" : "(Draft)"}</i></span>
+                            <Link to={"/" + post._id + "?edit=true"}><span>Edit</span></Link>
                             <Link><span>Delete</span></Link>
+
                         </div>
 
                     )
