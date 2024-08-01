@@ -5,9 +5,10 @@ import PropTypes from 'prop-types'
 import { format } from "date-fns"
 import CreatePost from "../create-post/create-post"
 
-function CommentForm ({ postid }) {
+function CommentForm ({ postid, commentToEdit }) {
     const navigate = useNavigate()
-    const [comment, setComment] = useState({ postid: postid })
+    const [comment, setComment] = useState( commentToEdit ? commentToEdit : { postid: postid })
+
 
 
     function formUpdate(e) {
@@ -16,7 +17,7 @@ function CommentForm ({ postid }) {
 
         const newComment = {
             ...comment,
-            text: document.querySelector("#comment").value
+            text: commentToEdit ? document.querySelector("#commentedit").value : document.querySelector("#comment").value
         }
         setComment(newComment)
 
@@ -26,7 +27,7 @@ function CommentForm ({ postid }) {
         e.preventDefault()
         try {
             const json = await fetch('http://localhost:3000/comments', { 
-                method: 'POST', 
+                method: commentToEdit ? 'PUT' : 'POST', 
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${JSON.parse(localStorage.getItem("token"))}`},
                 body: JSON.stringify(comment)
             })
@@ -47,16 +48,31 @@ function CommentForm ({ postid }) {
 
     }
 
-    return (
-        <form onSubmit={formSubmit} className={style.comment}>
-            <div className={style.divForm}>
-                <label htmlFor="comment">Your Comment</label>
-                <textarea onChange={formUpdate} name="comment" id="comment" value={comment.text} />
-                <input type="hidden" name="postid" id="postid" value={comment.post}/>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-    )
+    if (commentToEdit) {
+        return (
+            <form onSubmit={formSubmit} className={style.comment}>
+                <div className={style.divForm}>
+                    <label htmlFor="commentedit">Your Comment</label>
+                    <textarea onChange={formUpdate} name="commentedit" id="commentedit" value={comment.text} />
+                    <input type="hidden" name="postid" id="postid" value={comment.post}/>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        )
+    } else {
+        return (
+            <form onSubmit={formSubmit} className={style.comment}>
+                <div className={style.divForm}>
+                    <label htmlFor="comment">Your Comment</label>
+                    <textarea onChange={formUpdate} name="comment" id="comment" value={comment.text} />
+                    <input type="hidden" name="postid" id="postid" value={comment.post}/>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        )
+    }
+
+
 }
 
 
@@ -68,9 +84,35 @@ export default function Post () {
     const [searchParams] = useSearchParams()
 
     const editMode = searchParams.get('edit') === "true"
+    const editComment = comments.some( comment => comment._id === searchParams.get('edit_comment'))
 
     if (user && user._id === post.user._id && user.author && editMode) {
         return <CreatePost postToEdit={post}/>
+    } else if (user && editComment && user._id === comments.find( comment => comment._id === searchParams.get('edit_comment') ).user._id) {
+        return (
+            <div className={style.postFeed}>
+                <div className={style.postHolder}>
+                    <h1>{post.title}</h1>
+                    <p className={style.serviceText}>posted on {format(post.timeStamp, 'MMMM do')} by {post.user.username}</p>
+                    <p>{post.text}</p>
+                    <CommentForm postid={post._id} />
+                    {comments.map(comment => {
+
+                        if (comment._id === searchParams.get('edit_comment')) {
+                            return < CommentForm key={comment._id} postid={post._id} commentToEdit={comment}/>
+                        }
+
+
+                        return (
+                            <div key={comment._id} className={style.comment}>
+                                <p className={style.serviceText}>On {format(comment.timeStamp, 'MMMM do')} {comment.user.username} wrote</p>
+                                <p>{comment.text}</p>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        )
     } else if (user) {
         return (
             <div className={style.postFeed}>
@@ -112,5 +154,6 @@ export default function Post () {
 }
 
 CommentForm.propTypes = {
-    postid: PropTypes.string
+    postid: PropTypes.string,
+    commentToEdit: PropTypes.object
 }
