@@ -50,10 +50,57 @@ function DeletePostForm ({ state, updateState}) {
 
 }
 
+function DeleteCommentForm ({ state, updateState}) {
+
+    const [password, setPassword] = useState()
+    const navigate = useNavigate()
+
+    async function deleteComment (e) {
+        e.preventDefault()
+
+        try { 
+            const json = await fetch(`http://localhost:3000/comments/${state}`, { 
+                method: 'DELETE', 
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${JSON.parse(localStorage.getItem("token"))}`},
+                body: JSON.stringify({password: password, _id: state})
+            })
+
+            const res = await json.json()
+
+
+            if (Array.isArray(res)) {
+                console.log(res)
+                alert("Something is wrong with the data, check console")
+            } else {
+                updateState(null)
+                navigate(`/user/${res._id}`)
+            }
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    
+    return (
+        <form onSubmit={deleteComment}>
+            <p>Are you sure you want to delete this comment?</p>
+            <p>Enter your password to confirm</p>
+            <label htmlFor="password">Password</label>
+            <input onChange={() => {setPassword(document.getElementById("password").value)}}type="password" id="password" name="password" value={password}/>
+            <input type="hidden" value={state}/>
+            <button type="submit">Confirm</button>
+            <button onClick={() => { updateState(null)} }>Cancel</button>
+        </form>
+    )
+
+
+}
+
 export default function UserView () {
     const userPosts = useLoaderData()[1]
     const userComments = useLoaderData()[2]
     const [postToDelete, setPostToDelete] = useState(null)
+    const [commentToDelete, setCommentToDelete] = useState(null)
 
     return (
         <div className={style.columnHolder}>
@@ -92,7 +139,7 @@ export default function UserView () {
                         <div key={comment._id} className={style.editDiv}>
                             <span className={style.editMain}>{text}</span>
                             <Link><span>Edit</span></Link>
-                            <Link><span>Delete</span></Link>
+                            <Link onClick={() => {setCommentToDelete(comment._id)}}><span>Delete</span></Link>
                         </div>
 
                     )
@@ -100,7 +147,10 @@ export default function UserView () {
             </div>
             {postToDelete !== null && <div className={style.deletePopupHolder}>
                 < DeletePostForm state={postToDelete} updateState={setPostToDelete} />
-            </div>}    
+            </div>}
+            {commentToDelete !== null && <div className={style.deletePopupHolder}>
+                < DeleteCommentForm state={commentToDelete} updateState={setCommentToDelete} />
+            </div>}
         </div>
 
     )
