@@ -138,7 +138,7 @@ export default function UserView () {
                     return (
                         <div key={comment._id} className={style.editDiv}>
                             <span className={style.editMain}>{text}</span>
-                            <Link><span>Edit</span></Link>
+                            <Link to={"/" + comment.post + `?edit_comment=${comment._id}`}><span>Edit</span></Link>
                             <Link onClick={() => {setCommentToDelete(comment._id)}}><span>Delete</span></Link>
                         </div>
 
