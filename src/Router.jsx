@@ -76,6 +76,12 @@ export default function Router () {
             element: <><Header /><Post /></>, 
             loader: async ({params}) => {
                 const data = await Promise.all([userLogged(), retrievePostAndComments(params.id)])
+
+                if (!data[1][0].published && (!data[0] || data[0]._id !== data[1][0].user._id)) {
+
+                    return redirect("/")
+                }
+
                 return data
             }
         },

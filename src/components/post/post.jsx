@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router-dom"
 import style from "./post.module.css"
 import { useState } from "react"
 import PropTypes from 'prop-types'
@@ -86,7 +86,18 @@ export default function Post () {
     const editMode = searchParams.get('edit') === "true"
     const editComment = comments.some( comment => comment._id === searchParams.get('edit_comment'))
 
-    if (user && user._id === post.user._id && user.author && editMode) {
+    if (!post.published && !editMode) {
+        return (
+            <div className={style.postFeed}>
+                <div className={style.postHolder}>
+                    <h1>{post.title}</h1>
+                    <p className={style.serviceText}>Draft</p>
+                    <p>{post.text}</p>
+                    <Link to={"/" + post._id + "?edit=true"}><span>Edit</span></Link>
+                </div>
+            </div>
+        )
+    } else if (user && user._id === post.user._id && user.author && editMode) {
         return <CreatePost postToEdit={post}/>
     } else if (user && editComment && user._id === comments.find( comment => comment._id === searchParams.get('edit_comment') ).user._id) {
         return (
