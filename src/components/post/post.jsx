@@ -101,6 +101,7 @@ export default function Post() {
   );
 
   if (!post.published && !editMode) {
+    //post is a draft
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
@@ -114,6 +115,7 @@ export default function Post() {
       </div>
     );
   } else if (user && user.id === post.user.id && user.author && editMode) {
+    //post is in edit mode
     return <CreatePost postToEdit={post} />;
   } else if (
     user &&
@@ -123,6 +125,9 @@ export default function Post() {
         (comment) => comment.id === searchParams.get("edit_comment")
       ).user.id
   ) {
+    // post is published a post comment is in edit mode
+    //if the user is the post author, edit button will show up
+    //if the user is a comment author, edit button will show up
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
@@ -132,9 +137,15 @@ export default function Post() {
             {post.user.username}
           </p>
           <p>{post.text}</p>
+          {user.id === post.user.id && user.author && (
+            <Link to={"/" + post.id + "?edit=true"}>
+              <span>Edit</span>
+            </Link>
+          )}
           <CommentForm postid={post.id} />
           {comments.map((comment) => {
             if (comment.id === searchParams.get("edit_comment")) {
+              // return the form for the comment being edited
               return (
                 <CommentForm
                   key={comment.id}
@@ -150,6 +161,13 @@ export default function Post() {
                   On {format(comment.timeStamp, "MMMM do")}{" "}
                   {comment.user.username} wrote
                 </p>
+                {user.id === comment.user.id && (
+                  <Link
+                    to={"/" + comment.post.id + `?edit_comment=${comment.id}`}
+                  >
+                    <span>Edit</span>
+                  </Link>
+                )}
                 <p>{comment.text}</p>
               </div>
             );
@@ -158,6 +176,9 @@ export default function Post() {
       </div>
     );
   } else if (user) {
+    //post is published, standard view for logged user
+    //if the user is the post author, edit button will show up
+    //if the user is a comment author, edit button will show up
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
@@ -167,6 +188,11 @@ export default function Post() {
             {post.user.username}
           </p>
           <p>{post.text}</p>
+          {user.id === post.user.id && user.author && (
+            <Link to={"/" + post.id + "?edit=true"}>
+              <span>Edit</span>
+            </Link>
+          )}
           <CommentForm postid={post.id} />
           {comments.map((comment) => {
             return (
@@ -175,6 +201,13 @@ export default function Post() {
                   On {format(comment.timeStamp, "MMMM do")}{" "}
                   {comment.user.username} wrote
                 </p>
+                {user.id === comment.user.id && (
+                  <Link
+                    to={"/" + comment.post.id + `?edit_comment=${comment.id}`}
+                  >
+                    <span>Edit</span>
+                  </Link>
+                )}
                 <p>{comment.text}</p>
               </div>
             );
@@ -183,6 +216,7 @@ export default function Post() {
       </div>
     );
   } else {
+    //post is published but no user is logged
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
