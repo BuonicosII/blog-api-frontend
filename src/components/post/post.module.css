@@ -1,32 +1,27 @@
 .postFeed {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .postHolder {
-    width: 50%;
+  width: 50%;
 }
 
 .divForm {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 textarea {
-    resize: vertical; 
-    max-height: 200px;
-    min-height: 30px;
-}
-
-.comment {
-    width: 50%;
-    padding: 8px;
+  resize: vertical;
+  max-height: 200px;
+  min-height: 30px;
 }
 
 .serviceText {
-    color: grey;
-    font-size: 15px;
+  color: grey;
+  font-size: 15px;
 }
