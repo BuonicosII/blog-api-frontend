@@ -3,6 +3,13 @@ import {
   redirect,
   RouterProvider,
 } from "react-router-dom";
+import {
+  userLogged,
+  retrievePostAndComments,
+  retrievePosts,
+  retrieveUserComments,
+  retrieveUserPosts,
+} from "./functions";
 import AllPosts from "./components/allposts/allposts";
 import Post from "./components/post/post";
 import Header from "./components/header/header";
@@ -10,65 +17,6 @@ import SignUp from "./components/sign-up-form/sign-up-form";
 import LogIn from "./components/log-in/log-in";
 import CreatePost from "./components/create-post/create-post";
 import UserView from "./components/userview/userview";
-
-async function retrievePostAndComments(pathname) {
-  const [postJson, postCommentsJson] = await Promise.all([
-    await fetch("http://localhost:3000/posts/" + pathname),
-    await fetch("http://localhost:3000/posts/" + pathname + "/comments"),
-  ]);
-
-  const retrievedPostAndComments = await Promise.all([
-    await postJson.json(),
-    await postCommentsJson.json(),
-  ]);
-
-  return retrievedPostAndComments;
-}
-
-async function retrievePosts() {
-  const postsJson = await fetch("http://localhost:3000/posts");
-  const retrievedPosts = await postsJson.json();
-
-  return retrievedPosts;
-}
-
-async function retrieveUserPosts(userid) {
-  const postsJson = await fetch("http://localhost:3000/posts");
-  const retrievedPosts = await postsJson.json();
-
-  const retrievedUserPosts = retrievedPosts.filter(
-    (post) => post.userId === userid
-  );
-
-  return retrievedUserPosts;
-}
-
-async function retrieveUserComments(userid) {
-  const commentsJson = await fetch("http://localhost:3000/comments");
-  const retrievedComments = await commentsJson.json();
-
-  const retrievedUserComments = retrievedComments.filter(
-    (comment) => comment.user.id === userid
-  );
-
-  return retrievedUserComments;
-}
-
-async function userLogged() {
-  if (localStorage.getItem("token")) {
-    const userJson = await fetch("http://localhost:3000/users/user", {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-      },
-    });
-
-    const user = await userJson.json();
-
-    return user;
-  } else {
-    return null;
-  }
-}
 
 export default function Router() {
   const router = createBrowserRouter([
