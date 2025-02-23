@@ -1,13 +1,18 @@
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import style from "./post.module.css";
 import { format } from "date-fns";
+import { useState } from "react";
 import CreatePost from "../create-post/create-post";
 import CommentForm from "../create-comment/create-comment";
+import DeletePostForm from "../delete-post/delete-post";
+import DeleteCommentForm from "../delete-comment/deleteComment";
 
 export default function Post() {
   const post = useLoaderData()[1][0];
   const comments = useLoaderData()[1][1];
   const user = useLoaderData()[0];
+  const [postToDelete, setPostToDelete] = useState(null);
+  const [commentToDelete, setCommentToDelete] = useState(null);
   const [searchParams] = useSearchParams();
 
   const editMode = searchParams.get("edit") === "true";
@@ -26,7 +31,22 @@ export default function Post() {
           <Link to={"/" + post.id + "?edit=true"}>
             <span>Edit</span>
           </Link>
+          <Link
+            onClick={() => {
+              setPostToDelete(post.id);
+            }}
+          >
+            <span>Delete</span>
+          </Link>
         </div>
+        {postToDelete !== null && (
+          <div className={style.deletePopupHolder}>
+            <DeletePostForm
+              state={postToDelete}
+              updateState={setPostToDelete}
+            />
+          </div>
+        )}
       </div>
     );
   } else if (user && user.id === post.user.id && user.author && editMode) {
@@ -57,16 +77,36 @@ export default function Post() {
               <span>Edit</span>
             </Link>
           )}
+          {user.id === post.user.id && user.author && (
+            <Link
+              onClick={() => {
+                setCommentToDelete(null);
+                setPostToDelete(post.id);
+              }}
+            >
+              <span>Delete</span>
+            </Link>
+          )}
           <CommentForm postid={post.id} />
           {comments.map((comment) => {
             if (comment.id === searchParams.get("edit_comment")) {
               // return the form for the comment being edited
               return (
-                <CommentForm
-                  key={comment.id}
-                  postid={post.id}
-                  commentToEdit={comment}
-                />
+                <>
+                  <CommentForm
+                    key={comment.id}
+                    postid={post.id}
+                    commentToEdit={comment}
+                  />
+                  <Link
+                    onClick={() => {
+                      setPostToDelete(null);
+                      setCommentToDelete(comment.id);
+                    }}
+                  >
+                    <span>Delete</span>
+                  </Link>
+                </>
               );
             }
 
@@ -83,11 +123,37 @@ export default function Post() {
                     <span>Edit</span>
                   </Link>
                 )}
+                {user.id === comment.user.id && (
+                  <Link
+                    onClick={() => {
+                      setPostToDelete(null);
+                      setCommentToDelete(comment.id);
+                    }}
+                  >
+                    <span>Delete</span>
+                  </Link>
+                )}
                 <p>{comment.text}</p>
               </div>
             );
           })}
         </div>
+        {postToDelete !== null && (
+          <div className={style.deletePopupHolder}>
+            <DeletePostForm
+              state={postToDelete}
+              updateState={setPostToDelete}
+            />
+          </div>
+        )}
+        {commentToDelete !== null && (
+          <div className={style.deletePopupHolder}>
+            <DeleteCommentForm
+              state={commentToDelete}
+              updateState={setCommentToDelete}
+            />
+          </div>
+        )}
       </div>
     );
   } else if (user) {
@@ -108,6 +174,16 @@ export default function Post() {
               <span>Edit</span>
             </Link>
           )}
+          {user.id === post.user.id && user.author && (
+            <Link
+              onClick={() => {
+                setCommentToDelete(null);
+                setPostToDelete(post.id);
+              }}
+            >
+              <span>Delete</span>
+            </Link>
+          )}
           <CommentForm postid={post.id} />
           {comments.map((comment) => {
             return (
@@ -123,11 +199,37 @@ export default function Post() {
                     <span>Edit</span>
                   </Link>
                 )}
+                {user.id === comment.user.id && (
+                  <Link
+                    onClick={() => {
+                      setPostToDelete(null);
+                      setCommentToDelete(comment.id);
+                    }}
+                  >
+                    <span>Delete</span>
+                  </Link>
+                )}
                 <p>{comment.text}</p>
               </div>
             );
           })}
         </div>
+        {postToDelete !== null && (
+          <div className={style.deletePopupHolder}>
+            <DeletePostForm
+              state={postToDelete}
+              updateState={setPostToDelete}
+            />
+          </div>
+        )}
+        {commentToDelete !== null && (
+          <div className={style.deletePopupHolder}>
+            <DeleteCommentForm
+              state={commentToDelete}
+              updateState={setCommentToDelete}
+            />
+          </div>
+        )}
       </div>
     );
   } else {
