@@ -9,10 +9,14 @@ export default function Header() {
       <header>
         <nav>
           <span className={style.home}>
-            <Link to="/">Home</Link>
+            <Link to="/">B-Log</Link>
           </span>
-          <Link to="/sign-up">Sign Up</Link>
-          <Link to="/log-in">Log in</Link>
+          <Link to="/sign-up">
+            <button className={style.login}>Sign Up</button>
+          </Link>
+          <Link to="/log-in">
+            <button className={style.login}>Log in</button>
+          </Link>
         </nav>
       </header>
     );
@@ -21,11 +25,13 @@ export default function Header() {
       <header>
         <nav>
           <span className={style.home}>
-            <Link to="/">Home</Link>
+            <Link to="/">B-Log</Link>
           </span>
           {user.author && (
             <span>
-              <Link to="/new-post">New Post</Link>
+              <Link to="/new-post">
+                <button className={style.newpost}>New Post</button>
+              </Link>
             </span>
           )}
           <span>
@@ -36,7 +42,7 @@ export default function Header() {
               localStorage.removeItem("token");
             }}
           >
-            Log out
+            <button className={style.logout}>Log out</button>
           </Link>
         </nav>
       </header>
