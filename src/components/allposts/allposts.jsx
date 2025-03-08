@@ -5,18 +5,24 @@ export default function AllPosts() {
   const posts = useLoaderData()[1];
 
   return (
-    <div className={style.feed}>
-      {posts.map((post) => {
-        if (post.published) {
-          return (
-            <div key={post.id}>
-              <Link to={"/" + post.id}>
-                <p>{post.title}</p>
-              </Link>
-            </div>
-          );
-        }
-      })}
-    </div>
+    <main>
+      <div className={style.feed}>
+        {posts.map((post) => {
+          if (post.published) {
+            return (
+              <div key={post.id}>
+                <p>{post.user.username}</p>
+                <Link to={"/" + post.id}>
+                  <p>{post.title}</p>
+                </Link>
+                {post.text.length > 50
+                  ? post.text.slice(0, 50) + "..."
+                  : post.text}
+              </div>
+            );
+          }
+        })}
+      </div>
+    </main>
   );
 }
