@@ -1,0 +1,53 @@
+.deleteForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 8px;
+  border: 1px solid grey;
+  padding: 24px;
+  background-color: rgb(240, 240, 240);
+}
+
+.label {
+  font-size: small;
+  font-weight: bold;
+  display: block;
+}
+
+.formInput {
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 6px;
+}
+
+.buttonHolder {
+  display: flex;
+  gap: 24px;
+}
+
+.cancel {
+  border: 1px solid rgb(0, 60, 255);
+  background-color: white;
+  color: rgb(0, 60, 255);
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.confirm {
+  border: 1px solid rgb(255, 0, 0);
+  background-color: rgb(255, 0, 0);
+  color: rgb(255, 255, 255);
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.confirm:hover,
+.cancel:hover {
+  filter: brightness(1.25);
+  cursor: pointer;
+}

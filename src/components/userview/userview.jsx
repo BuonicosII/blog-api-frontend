@@ -5,26 +5,28 @@ import DeletePostForm from "../delete-post/delete-post";
 import DeleteCommentForm from "../delete-comment/deleteComment";
 
 export default function UserView() {
+  const user = useLoaderData()[0];
   const userPosts = useLoaderData()[1];
   const userComments = useLoaderData()[2];
   const [postToDelete, setPostToDelete] = useState(null);
   const [commentToDelete, setCommentToDelete] = useState(null);
 
   return (
-    <div className={style.columnHolder}>
-      <div className={style.column}>
-        <h2>Your posts</h2>
+    <main>
+      <h1 className={style.dashboardh1}>{user.username}</h1>
+      <div className={style.column} id={style.posts}>
+        <h2 className={style.sectionTitle}>Your posts</h2>
         {userPosts.map((post) => {
           let title = post.title;
 
-          if (title.length > 15) {
-            title = title.slice(0, 15) + "...";
+          if (title.length > 40) {
+            title = title.slice(0, 40) + "...";
           }
 
           return (
             <div key={post.id} className={style.editDiv}>
-              <Link to={"/" + post.id}>
-                <span className={style.editMain}>{title}</span>
+              <Link to={"/" + post.id} className={style.editMain}>
+                <span>{title}</span>
               </Link>
               <span>
                 <i>{post.published ? "(Public)" : "(Draft)"}</i>
@@ -43,13 +45,13 @@ export default function UserView() {
           );
         })}
       </div>
-      <div className={style.column}>
-        <h2>Your comments</h2>
+      <div className={style.column} id={style.comments}>
+        <h2 className={style.sectionTitle}>Your comments</h2>
         {userComments.map((comment) => {
           let text = comment.text;
 
-          if (text.length > 15) {
-            text = text.slice(0, 15) + "...";
+          if (text.length > 40) {
+            text = text.slice(0, 40) + "...";
           }
 
           return (
@@ -82,6 +84,6 @@ export default function UserView() {
           />
         </div>
       )}
-    </div>
+    </main>
   );
 }
