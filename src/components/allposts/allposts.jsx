@@ -7,18 +7,21 @@ export default function AllPosts() {
   return (
     <main>
       <div className={style.feed}>
-        {posts.map((post) => {
+        {posts.map((post, index) => {
           if (post.published) {
             return (
-              <div key={post.id}>
-                <p>{post.user.username}</p>
-                <Link to={"/" + post.id}>
-                  <p>{post.title}</p>
+              <>
+                {index !== 0 && <div className={style.hrlike}></div>}
+                <Link to={"/" + post.id} key={post.id}>
+                  <div className={style.post}>
+                    <p>{post.user.username}</p>
+                    <p className={style.postTitle}>{post.title}</p>
+                    {post.text.length > 100
+                      ? post.text.slice(0, 100) + "..."
+                      : post.text}
+                  </div>
                 </Link>
-                {post.text.length > 50
-                  ? post.text.slice(0, 50) + "..."
-                  : post.text}
-              </div>
+              </>
             );
           }
         })}
