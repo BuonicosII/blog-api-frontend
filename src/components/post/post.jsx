@@ -6,6 +6,7 @@ import CreatePost from "../create-post/create-post";
 import CommentForm from "../create-comment/create-comment";
 import DeletePostForm from "../delete-post/delete-post";
 import DeleteCommentForm from "../delete-comment/deleteComment";
+import { decode } from "html-entities";
 
 export default function Post() {
   const post = useLoaderData()[1][0];
@@ -25,9 +26,9 @@ export default function Post() {
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
-          <h1>{post.title}</h1>
+          <h1>{decode(post.title)}</h1>
           <p className={style.serviceText}>Draft</p>
-          <p>{post.text}</p>
+          <p>{decode(post.text)}</p>
           <Link to={"/" + post.id + "?edit=true"}>
             <span>Edit</span>
           </Link>
@@ -66,12 +67,12 @@ export default function Post() {
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
-          <h1>{post.title}</h1>
+          <h1>{decode(post.title)}</h1>
           <p className={style.serviceText}>
             posted on {format(post.timeStamp, "MMMM do")} by{" "}
             {post.user.username}
           </p>
-          <p>{post.text}</p>
+          <p>{decode(post.text)}</p>
           {user.id === post.user.id && user.author && (
             <Link to={"/" + post.id + "?edit=true"}>
               <span>Edit</span>
@@ -133,7 +134,7 @@ export default function Post() {
                     <span>Delete</span>
                   </Link>
                 )}
-                <p>{comment.text}</p>
+                <p>{decode(comment.text)}</p>
               </div>
             );
           })}
@@ -163,12 +164,12 @@ export default function Post() {
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
-          <h1>{post.title}</h1>
+          <h1>{decode(post.title)}</h1>
           <p className={style.serviceText}>
             posted on {format(post.timeStamp, "MMMM do")} by{" "}
             {post.user.username}
           </p>
-          <p>{post.text}</p>
+          <p>{decode(post.text)}</p>
           {user.id === post.user.id && user.author && (
             <Link to={"/" + post.id + "?edit=true"}>
               <span>Edit</span>
@@ -209,7 +210,7 @@ export default function Post() {
                     <span>Delete</span>
                   </Link>
                 )}
-                <p>{comment.text}</p>
+                <p>{decode(comment.text)}</p>
               </div>
             );
           })}
@@ -237,12 +238,12 @@ export default function Post() {
     return (
       <div className={style.postFeed}>
         <div className={style.postHolder}>
-          <h1>{post.title}</h1>
+          <h1>{decode(post.title)}</h1>
           <p className={style.serviceText}>
             posted on {format(post.timeStamp, "MMMM do")} by{" "}
             {post.user.username}
           </p>
-          <p>{post.text}</p>
+          <p>{decode(post.text)}</p>
           {comments.map((comment) => {
             return (
               <div key={comment.id} className={style.comment}>
@@ -250,7 +251,7 @@ export default function Post() {
                   On {format(comment.timeStamp, "MMMM do")}{" "}
                   {comment.user.username} wrote
                 </p>
-                <p>{comment.text}</p>
+                <p>{decode(comment.text)}</p>
               </div>
             );
           })}

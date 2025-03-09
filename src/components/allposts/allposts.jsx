@@ -1,5 +1,6 @@
 import { Link, useLoaderData } from "react-router-dom";
 import style from "./allpost.module.css";
+import { decode } from "html-entities";
 
 export default function AllPosts() {
   const posts = useLoaderData()[1];
@@ -17,8 +18,8 @@ export default function AllPosts() {
                     <p>{post.user.username}</p>
                     <p className={style.postTitle}>{post.title}</p>
                     {post.text.length > 100
-                      ? post.text.slice(0, 100) + "..."
-                      : post.text}
+                      ? decode(post.text).slice(0, 100) + "..."
+                      : decode(post.text)}
                   </div>
                 </Link>
               </>

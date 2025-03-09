@@ -3,6 +3,7 @@ import style from "./userview.module.css";
 import { useState } from "react";
 import DeletePostForm from "../delete-post/delete-post";
 import DeleteCommentForm from "../delete-comment/deleteComment";
+import { decode } from "html-entities";
 
 export default function UserView() {
   const user = useLoaderData()[0];
@@ -17,7 +18,7 @@ export default function UserView() {
       <div className={style.column} id={style.posts}>
         <h2 className={style.sectionTitle}>Your posts</h2>
         {userPosts.map((post) => {
-          let title = post.title;
+          let title = decode(post.title);
 
           if (title.length > 40) {
             title = title.slice(0, 40) + "...";
@@ -48,7 +49,7 @@ export default function UserView() {
       <div className={style.column} id={style.comments}>
         <h2 className={style.sectionTitle}>Your comments</h2>
         {userComments.map((comment) => {
-          let text = comment.text;
+          let text = decode(comment.text);
 
           if (text.length > 40) {
             text = text.slice(0, 40) + "...";
