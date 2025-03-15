@@ -2,10 +2,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  grid-area: 1 / 2 / 2 / 5;
+}
+
+.comment {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .postHolder {
   width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.postTitle {
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.editLinks {
+  display: flex;
+  gap: 8px;
 }
 
 .divForm {

@@ -86,7 +86,20 @@ export default function CreatePost({ postToEdit }) {
           />
           <label htmlFor="published">Publish</label>
         </div>
-        <button type="submit">Submit</button>
+        <div>
+          <button type="submit">Submit</button>
+          <button
+            onClick={() => {
+              if (postToEdit) {
+                navigate(`/${post.id}`);
+              } else {
+                navigate("/");
+              }
+            }}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

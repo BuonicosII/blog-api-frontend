@@ -57,10 +57,23 @@ export default function CommentForm({ postid, commentToEdit }) {
             name="commentedit"
             id="commentedit"
             value={comment.text}
+            className={style.commentTextarea}
           />
           <input type="hidden" name="postid" id="postid" value={comment.post} />
         </div>
-        <button type="submit">Submit</button>
+        <div className={style.buttonHolder}>
+          <button type="submit" className={style.confirm}>
+            Submit
+          </button>
+          <button
+            onClick={() => {
+              navigate(`/${postid}`);
+            }}
+            className={style.cancel}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     );
   } else {
@@ -73,10 +86,15 @@ export default function CommentForm({ postid, commentToEdit }) {
             name="comment"
             id="comment"
             value={comment.text}
+            className={style.commentTextarea}
           />
           <input type="hidden" name="postid" id="postid" value={comment.post} />
         </div>
-        <button type="submit">Submit</button>
+        <div>
+          <button type="submit" className={style.confirm}>
+            Submit
+          </button>
+        </div>
       </form>
     );
   }

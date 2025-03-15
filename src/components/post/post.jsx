@@ -24,34 +24,40 @@ export default function Post() {
   if (!post.published && !editMode) {
     //post is a draft
     return (
-      <div className={style.postFeed}>
-        <div className={style.postHolder}>
-          <h1>{decode(post.title)}</h1>
-          <p className={style.serviceText}>Draft</p>
-          <p>{decode(post.text)}</p>
-          <Link to={"/" + post.id + "?edit=true"}>
-            <span>Edit</span>
-          </Link>
-          <Link
-            onClick={() => {
-              setPostToDelete(post.id);
-            }}
-          >
-            <span>Delete</span>
-          </Link>
-        </div>
-        {postToDelete !== null && (
-          <div className={style.deletePopupHolder}>
-            <DeletePostForm
-              state={postToDelete}
-              updateState={setPostToDelete}
-            />
+      <main>
+        <div className={style.postFeed}>
+          <div className={style.postHolder}>
+            <h1 className={style.postTitle}>{decode(post.title)}</h1>
+            <p className={style.serviceText}>Draft</p>
+            <p>{decode(post.text)}</p>
+            <div className={style.editLinks}>
+              <Link to={"/" + post.id + "?edit=true"}>
+                <span>Edit</span>
+              </Link>
+              <Link
+                onClick={() => {
+                  setPostToDelete(post.id);
+                }}
+              >
+                <span>Delete</span>
+              </Link>
+            </div>
           </div>
-        )}
-      </div>
+          {postToDelete !== null && (
+            <div className={style.deletePopupHolder}>
+              <DeletePostForm
+                state={postToDelete}
+                updateState={setPostToDelete}
+              />
+            </div>
+          )}
+        </div>
+      </main>
     );
   } else if (user && user.id === post.user.id && user.author && editMode) {
     //post is in edit mode
+    post.title = decode(post.title);
+    post.text = decode(post.text);
     return <CreatePost postToEdit={post} />;
   } else if (
     user &&
@@ -65,198 +71,203 @@ export default function Post() {
     //if the user is the post author, edit button will show up
     //if the user is a comment author, edit button will show up
     return (
-      <div className={style.postFeed}>
-        <div className={style.postHolder}>
-          <h1>{decode(post.title)}</h1>
-          <p className={style.serviceText}>
-            posted on {format(post.timeStamp, "MMMM do")} by{" "}
-            {post.user.username}
-          </p>
-          <p>{decode(post.text)}</p>
-          {user.id === post.user.id && user.author && (
-            <Link to={"/" + post.id + "?edit=true"}>
-              <span>Edit</span>
-            </Link>
-          )}
-          {user.id === post.user.id && user.author && (
-            <Link
-              onClick={() => {
-                setCommentToDelete(null);
-                setPostToDelete(post.id);
-              }}
-            >
-              <span>Delete</span>
-            </Link>
-          )}
-          <CommentForm postid={post.id} />
-          {comments.map((comment) => {
-            if (comment.id === searchParams.get("edit_comment")) {
-              // return the form for the comment being edited
-              return (
-                <>
-                  <CommentForm
-                    key={comment.id}
-                    postid={post.id}
-                    commentToEdit={comment}
-                  />
-                  <Link
-                    onClick={() => {
-                      setPostToDelete(null);
-                      setCommentToDelete(comment.id);
-                    }}
-                  >
-                    <span>Delete</span>
-                  </Link>
-                </>
-              );
-            }
-
-            return (
-              <div key={comment.id} className={style.comment}>
-                <p className={style.serviceText}>
-                  On {format(comment.timeStamp, "MMMM do")}{" "}
-                  {comment.user.username} wrote
-                </p>
-                {user.id === comment.user.id && (
-                  <Link
-                    to={"/" + comment.post.id + `?edit_comment=${comment.id}`}
-                  >
-                    <span>Edit</span>
-                  </Link>
-                )}
-                {user.id === comment.user.id && (
-                  <Link
-                    onClick={() => {
-                      setPostToDelete(null);
-                      setCommentToDelete(comment.id);
-                    }}
-                  >
-                    <span>Delete</span>
-                  </Link>
-                )}
-                <p>{decode(comment.text)}</p>
+      <main>
+        <div className={style.postFeed}>
+          <div className={style.postHolder}>
+            <h1 className={style.postTitle}>{decode(post.title)}</h1>
+            <p className={style.serviceText}>
+              posted on {format(post.timeStamp, "MMMM do")} by{" "}
+              {post.user.username}
+            </p>
+            <p>{decode(post.text)}</p>
+            {user.id === post.user.id && user.author && (
+              <div className={style.editLinks}>
+                <Link to={"/" + post.id + "?edit=true"}>
+                  <span>Edit</span>
+                </Link>
+                <Link
+                  onClick={() => {
+                    setCommentToDelete(null);
+                    setPostToDelete(post.id);
+                  }}
+                >
+                  <span>Delete</span>
+                </Link>
               </div>
-            );
-          })}
+            )}
+            {/* <CommentForm postid={post.id} /> */}
+            {comments.map((comment) => {
+              if (comment.id === searchParams.get("edit_comment")) {
+                // return the form for the comment being edited
+
+                comment.text = decode(comment.text);
+
+                return (
+                  <>
+                    <CommentForm
+                      key={comment.id}
+                      postid={post.id}
+                      commentToEdit={comment}
+                    />
+                  </>
+                );
+              }
+
+              return (
+                <div key={comment.id} className={style.comment}>
+                  <p className={style.serviceText}>
+                    On {format(comment.timeStamp, "MMMM do")}{" "}
+                    {comment.user.username} wrote
+                  </p>
+                  {user.id === comment.user.id && (
+                    <div className={style.editLinks}>
+                      <Link
+                        to={
+                          "/" + comment.post.id + `?edit_comment=${comment.id}`
+                        }
+                      >
+                        <span>Edit</span>
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          setPostToDelete(null);
+                          setCommentToDelete(comment.id);
+                        }}
+                      >
+                        <span>Delete</span>
+                      </Link>
+                    </div>
+                  )}
+                  <p>{decode(comment.text)}</p>
+                </div>
+              );
+            })}
+          </div>
+          {postToDelete !== null && (
+            <div className={style.deletePopupHolder}>
+              <DeletePostForm
+                state={postToDelete}
+                updateState={setPostToDelete}
+              />
+            </div>
+          )}
+          {commentToDelete !== null && (
+            <div className={style.deletePopupHolder}>
+              <DeleteCommentForm
+                state={commentToDelete}
+                updateState={setCommentToDelete}
+              />
+            </div>
+          )}
         </div>
-        {postToDelete !== null && (
-          <div className={style.deletePopupHolder}>
-            <DeletePostForm
-              state={postToDelete}
-              updateState={setPostToDelete}
-            />
-          </div>
-        )}
-        {commentToDelete !== null && (
-          <div className={style.deletePopupHolder}>
-            <DeleteCommentForm
-              state={commentToDelete}
-              updateState={setCommentToDelete}
-            />
-          </div>
-        )}
-      </div>
+      </main>
     );
   } else if (user) {
     //post is published, standard view for logged user
     //if the user is the post author, edit button will show up
     //if the user is a comment author, edit button will show up
     return (
-      <div className={style.postFeed}>
-        <div className={style.postHolder}>
-          <h1>{decode(post.title)}</h1>
-          <p className={style.serviceText}>
-            posted on {format(post.timeStamp, "MMMM do")} by{" "}
-            {post.user.username}
-          </p>
-          <p>{decode(post.text)}</p>
-          {user.id === post.user.id && user.author && (
-            <Link to={"/" + post.id + "?edit=true"}>
-              <span>Edit</span>
-            </Link>
-          )}
-          {user.id === post.user.id && user.author && (
-            <Link
-              onClick={() => {
-                setCommentToDelete(null);
-                setPostToDelete(post.id);
-              }}
-            >
-              <span>Delete</span>
-            </Link>
-          )}
-          <CommentForm postid={post.id} />
-          {comments.map((comment) => {
-            return (
-              <div key={comment.id} className={style.comment}>
-                <p className={style.serviceText}>
-                  On {format(comment.timeStamp, "MMMM do")}{" "}
-                  {comment.user.username} wrote
-                </p>
-                {user.id === comment.user.id && (
-                  <Link
-                    to={"/" + comment.post.id + `?edit_comment=${comment.id}`}
-                  >
-                    <span>Edit</span>
-                  </Link>
-                )}
-                {user.id === comment.user.id && (
-                  <Link
-                    onClick={() => {
-                      setPostToDelete(null);
-                      setCommentToDelete(comment.id);
-                    }}
-                  >
-                    <span>Delete</span>
-                  </Link>
-                )}
-                <p>{decode(comment.text)}</p>
+      <main>
+        <div className={style.postFeed}>
+          <div className={style.postHolder}>
+            <h1 className={style.postTitle}>{decode(post.title)}</h1>
+            <p className={style.serviceText}>
+              posted on {format(post.timeStamp, "MMMM do")} by{" "}
+              {post.user.username}
+            </p>
+            <p>{decode(post.text)}</p>
+            {user.id === post.user.id && user.author && (
+              <div className={style.editLinks}>
+                <Link to={"/" + post.id + "?edit=true"}>
+                  <span>Edit</span>
+                </Link>
+                <Link
+                  onClick={() => {
+                    setCommentToDelete(null);
+                    setPostToDelete(post.id);
+                  }}
+                >
+                  <span>Delete</span>
+                </Link>
               </div>
-            );
-          })}
+            )}
+            <CommentForm postid={post.id} />
+            {comments.map((comment) => {
+              return (
+                <div key={comment.id} className={style.comment}>
+                  <p className={style.serviceText}>
+                    On {format(comment.timeStamp, "MMMM do")}{" "}
+                    {comment.user.username} wrote
+                  </p>
+                  {user.id === comment.user.id && (
+                    <div className={style.editLinks}>
+                      <Link
+                        to={
+                          "/" + comment.post.id + `?edit_comment=${comment.id}`
+                        }
+                      >
+                        <span>Edit</span>
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          setPostToDelete(null);
+                          setCommentToDelete(comment.id);
+                        }}
+                      >
+                        <span>Delete</span>
+                      </Link>
+                    </div>
+                  )}
+                  <p>{decode(comment.text)}</p>
+                </div>
+              );
+            })}
+          </div>
+          {postToDelete !== null && (
+            <div className={style.deletePopupHolder}>
+              <DeletePostForm
+                state={postToDelete}
+                updateState={setPostToDelete}
+              />
+            </div>
+          )}
+          {commentToDelete !== null && (
+            <div className={style.deletePopupHolder}>
+              <DeleteCommentForm
+                state={commentToDelete}
+                updateState={setCommentToDelete}
+              />
+            </div>
+          )}
         </div>
-        {postToDelete !== null && (
-          <div className={style.deletePopupHolder}>
-            <DeletePostForm
-              state={postToDelete}
-              updateState={setPostToDelete}
-            />
-          </div>
-        )}
-        {commentToDelete !== null && (
-          <div className={style.deletePopupHolder}>
-            <DeleteCommentForm
-              state={commentToDelete}
-              updateState={setCommentToDelete}
-            />
-          </div>
-        )}
-      </div>
+      </main>
     );
   } else {
     //post is published but no user is logged
     return (
-      <div className={style.postFeed}>
-        <div className={style.postHolder}>
-          <h1>{decode(post.title)}</h1>
-          <p className={style.serviceText}>
-            posted on {format(post.timeStamp, "MMMM do")} by{" "}
-            {post.user.username}
-          </p>
-          <p>{decode(post.text)}</p>
-          {comments.map((comment) => {
-            return (
-              <div key={comment.id} className={style.comment}>
-                <p className={style.serviceText}>
-                  On {format(comment.timeStamp, "MMMM do")}{" "}
-                  {comment.user.username} wrote
-                </p>
-                <p>{decode(comment.text)}</p>
-              </div>
-            );
-          })}
+      <main>
+        <div className={style.postFeed}>
+          <div className={style.postHolder}>
+            <h1 className={style.postTitle}>{decode(post.title)}</h1>
+            <p className={style.serviceText}>
+              posted on {format(post.timeStamp, "MMMM do")} by{" "}
+              {post.user.username}
+            </p>
+            <p>{decode(post.text)}</p>
+            {comments.map((comment) => {
+              return (
+                <div key={comment.id} className={style.comment}>
+                  <p className={style.serviceText}>
+                    On {format(comment.timeStamp, "MMMM do")}{" "}
+                    {comment.user.username} wrote
+                  </p>
+                  <p>{decode(comment.text)}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </main>
     );
   }
 }
