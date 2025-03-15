@@ -41,7 +41,10 @@
 }
 
 .commentTextarea {
-  padding: 16px;
+  padding: 6px;
   resize: none;
   height: 100px;
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid black;
 }

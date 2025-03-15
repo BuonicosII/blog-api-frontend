@@ -1,21 +1,79 @@
 .divForm {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .checkboxDiv {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 8px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .formHolder {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
 }
 
 form {
-    padding: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.postHolder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-area: 1 / 2 / 2 / 5;
+}
+
+.buttonHolder {
+  display: flex;
+  gap: 24px;
+}
+
+.formInput {
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 6px;
+}
+
+.postTextarea {
+  padding: 6px;
+  resize: none;
+  height: 300px;
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid black;
+}
+
+.cancel {
+  border: 1px solid rgb(0, 60, 255);
+  background-color: white;
+  color: rgb(0, 60, 255);
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.confirm {
+  border: 1px solid rgb(0, 60, 255);
+  background-color: rgb(0, 60, 255);
+  color: rgb(255, 255, 255);
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.confirm:hover,
+.cancel:hover {
+  filter: brightness(1.25);
+  cursor: pointer;
 }

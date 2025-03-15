@@ -55,53 +55,62 @@ export default function CreatePost({ postToEdit }) {
   }
 
   return (
-    <div className={style.formHolder}>
-      <form onSubmit={formSubmit}>
-        <div className={style.divForm}>
-          <label htmlFor="title">Post title</label>
-          <input
-            onChange={formUpdate}
-            type="text"
-            id="title"
-            name="title"
-            value={post.title}
-          />
+    <main>
+      <div className={style.postHolder}>
+        <div className={style.formHolder}>
+          <form onSubmit={formSubmit}>
+            <div className={style.divForm}>
+              <label htmlFor="title">Post title</label>
+              <input
+                onChange={formUpdate}
+                type="text"
+                id="title"
+                name="title"
+                value={post.title}
+                className={style.formInput}
+              />
+            </div>
+            <div className={style.divForm}>
+              <label htmlFor="text">Post text</label>
+              <textarea
+                onChange={formUpdate}
+                name="text"
+                id="text"
+                value={post.text}
+                className={style.postTextarea}
+              ></textarea>
+            </div>
+            <div className={style.checkboxDiv}>
+              <input
+                onChange={checkUpdate}
+                type="checkbox"
+                name="published"
+                id="published"
+                checked={post.published}
+              />
+              <label htmlFor="published">Publish</label>
+            </div>
+            <div className={style.buttonHolder}>
+              <button type="submit" className={style.confirm}>
+                Submit
+              </button>
+              <button
+                onClick={() => {
+                  if (postToEdit) {
+                    navigate(`/${post.id}`);
+                  } else {
+                    navigate("/");
+                  }
+                }}
+                className={style.cancel}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-        <div className={style.divForm}>
-          <label htmlFor="text">Post text</label>
-          <textarea
-            onChange={formUpdate}
-            name="text"
-            id="text"
-            value={post.text}
-          ></textarea>
-        </div>
-        <div className={style.checkboxDiv}>
-          <input
-            onChange={checkUpdate}
-            type="checkbox"
-            name="published"
-            id="published"
-            checked={post.published}
-          />
-          <label htmlFor="published">Publish</label>
-        </div>
-        <div>
-          <button type="submit">Submit</button>
-          <button
-            onClick={() => {
-              if (postToEdit) {
-                navigate(`/${post.id}`);
-              } else {
-                navigate("/");
-              }
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+    </main>
   );
 }
 
