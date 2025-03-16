@@ -5,6 +5,7 @@ import style from "./delete-post.module.css";
 
 export default function DeletePostForm({ state, updateState }) {
   const [password, setPassword] = useState();
+  const [errMsg, setErrMsg] = useState();
   const navigate = useNavigate();
 
   async function deletePost(e) {
@@ -23,14 +24,19 @@ export default function DeletePostForm({ state, updateState }) {
       const res = await json.json();
 
       if (Array.isArray(res)) {
-        console.log(res);
-        alert("Something is wrong with the data, check console");
+        setErrMsg(res[0]);
       } else {
         updateState(null);
         navigate(`/user/${res.id}`);
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  function errStyling(message, field) {
+    if (message && message.path === field) {
+      return style.errInput;
     }
   }
 
@@ -46,13 +52,16 @@ export default function DeletePostForm({ state, updateState }) {
         </label>
         <input
           onChange={() => {
+            if (errMsg !== null) {
+              setErrMsg(null);
+            }
             setPassword(document.getElementById("password").value);
           }}
           type="password"
           id="password"
           name="password"
           value={password}
-          className={style.formInput}
+          className={style.formInput + " " + errStyling(errMsg, "password")}
         />
       </div>
       <input type="hidden" value={state} />
@@ -69,6 +78,7 @@ export default function DeletePostForm({ state, updateState }) {
           Cancel
         </button>
       </div>
+      {errMsg && <p className={style.errText}>{errMsg.msg}</p>}
     </form>
   );
 }
