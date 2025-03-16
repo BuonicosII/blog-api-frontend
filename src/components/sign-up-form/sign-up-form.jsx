@@ -5,6 +5,7 @@ import style from "./sign-up.module.css";
 export default function SignUp() {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+  const [errMsg, setErrMsg] = useState();
 
   function formUpdate(e) {
     e.preventDefault();
@@ -18,6 +19,11 @@ export default function SignUp() {
       passwordConfirm: document.querySelector("#passwordConfirm").value,
       username: document.querySelector("#username").value,
     };
+
+    if (errMsg !== null) {
+      setErrMsg(null);
+    }
+
     setUser(newUser);
   }
 
@@ -33,13 +39,18 @@ export default function SignUp() {
       const res = await json.json();
 
       if (Array.isArray(res)) {
-        console.log(res);
-        alert("Something is wrong with the data, check console");
+        setErrMsg(res[0]);
       } else {
         navigate("/log-in");
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  function errStyling(message, field) {
+    if (message && message.path === field) {
+      return style.errInput;
     }
   }
 
@@ -56,7 +67,9 @@ export default function SignUp() {
                 id="firstName"
                 name="firstName"
                 value={user.firstName}
-                className={style.formInput}
+                className={
+                  style.formInput + " " + errStyling(errMsg, "firstName")
+                }
               />
             </div>
             <div className={style.divForm}>
@@ -67,7 +80,9 @@ export default function SignUp() {
                 id="lastName"
                 name="lastName"
                 value={user.lastName}
-                className={style.formInput}
+                className={
+                  style.formInput + " " + errStyling(errMsg, "lastName")
+                }
               />
             </div>
             <div className={style.divForm}>
@@ -78,7 +93,7 @@ export default function SignUp() {
                 id="email"
                 name="email"
                 value={user.email}
-                className={style.formInput}
+                className={style.formInput + " " + errStyling(errMsg, "email")}
               />
             </div>
             <div className={style.divForm}>
@@ -89,7 +104,9 @@ export default function SignUp() {
                 id="password"
                 name="password"
                 value={user.password}
-                className={style.formInput}
+                className={
+                  style.formInput + " " + errStyling(errMsg, "password")
+                }
               />
             </div>
             <div className={style.divForm}>
@@ -100,7 +117,9 @@ export default function SignUp() {
                 name="passwordConfirm"
                 id="passwordConfirm"
                 value={user.passwordConfirm}
-                className={style.formInput}
+                className={
+                  style.formInput + " " + errStyling(errMsg, "passwordConfirm")
+                }
               />
             </div>
             <div className={style.divForm}>
@@ -111,12 +130,15 @@ export default function SignUp() {
                 name="username"
                 id="username"
                 value={user.username}
-                className={style.formInput}
+                className={
+                  style.formInput + " " + errStyling(errMsg, "username")
+                }
               />
             </div>
             <button type="submit" className={style.confirm}>
               Submit
             </button>
+            {errMsg && <p className={style.errText}>{errMsg.msg}</p>}
           </form>
         </div>
       </div>
