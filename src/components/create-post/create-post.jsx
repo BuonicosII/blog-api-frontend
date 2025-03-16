@@ -7,6 +7,7 @@ export default function CreatePost({ postToEdit }) {
   const [post, setPost] = useState(
     postToEdit ? postToEdit : { published: false }
   );
+  const [errMsg, setErrMsg] = useState();
   const navigate = useNavigate();
 
   function formUpdate(e) {
@@ -17,6 +18,11 @@ export default function CreatePost({ postToEdit }) {
       title: document.querySelector("#title").value,
       text: document.querySelector("#text").value,
     };
+
+    if (errMsg !== null) {
+      setErrMsg(null);
+    }
+
     setPost(newPost);
   }
 
@@ -44,13 +50,18 @@ export default function CreatePost({ postToEdit }) {
       const res = await json.json();
 
       if (Array.isArray(res)) {
-        console.log(res);
-        alert("Something is wrong with the data, check console");
+        setErrMsg(res[0]);
       } else {
         navigate(`/${res.id}`);
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  function errStyling(message, field) {
+    if (message && message.path === field) {
+      return style.errInput;
     }
   }
 
@@ -67,7 +78,7 @@ export default function CreatePost({ postToEdit }) {
                 id="title"
                 name="title"
                 value={post.title}
-                className={style.formInput}
+                className={style.formInput + " " + errStyling(errMsg, "title")}
               />
             </div>
             <div className={style.divForm}>
@@ -77,7 +88,9 @@ export default function CreatePost({ postToEdit }) {
                 name="text"
                 id="text"
                 value={post.text}
-                className={style.postTextarea}
+                className={
+                  style.postTextarea + " " + errStyling(errMsg, "text")
+                }
               ></textarea>
             </div>
             <div className={style.checkboxDiv}>
@@ -107,6 +120,7 @@ export default function CreatePost({ postToEdit }) {
                 Cancel
               </button>
             </div>
+            {errMsg && <p className={style.errText}>{errMsg.msg}</p>}
           </form>
         </div>
       </div>

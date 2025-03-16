@@ -8,6 +8,7 @@ export default function CommentForm({ postid, commentToEdit }) {
   const [comment, setComment] = useState(
     commentToEdit ? commentToEdit : { postid: postid }
   );
+  const [errMsg, setErrMsg] = useState();
 
   function formUpdate(e) {
     e.preventDefault();
@@ -18,6 +19,11 @@ export default function CommentForm({ postid, commentToEdit }) {
         ? document.querySelector("#commentedit").value
         : document.querySelector("#comment").value,
     };
+
+    if (errMsg !== null) {
+      setErrMsg(null);
+    }
+
     setComment(newComment);
   }
 
@@ -36,14 +42,19 @@ export default function CommentForm({ postid, commentToEdit }) {
       const res = await json.json();
 
       if (Array.isArray(res)) {
-        console.log(res);
-        alert("Something is wrong with the data, check console");
+        setErrMsg(res[0]);
       } else {
         setComment({ postid: postid, text: "" });
         navigate(`/${postid}`);
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  function errStyling(message, field) {
+    if (message && message.path === field) {
+      return style.errInput;
     }
   }
 
@@ -57,7 +68,7 @@ export default function CommentForm({ postid, commentToEdit }) {
             name="commentedit"
             id="commentedit"
             value={comment.text}
-            className={style.commentTextarea}
+            className={style.commentTextarea + " " + errStyling(errMsg, "text")}
           />
           <input type="hidden" name="postid" id="postid" value={comment.post} />
         </div>
@@ -74,6 +85,7 @@ export default function CommentForm({ postid, commentToEdit }) {
             Cancel
           </button>
         </div>
+        {errMsg && <p className={style.errText}>{errMsg.msg}</p>}
       </form>
     );
   } else {
@@ -86,7 +98,7 @@ export default function CommentForm({ postid, commentToEdit }) {
             name="comment"
             id="comment"
             value={comment.text}
-            className={style.commentTextarea}
+            className={style.commentTextarea + " " + errStyling(errMsg, "text")}
           />
           <input type="hidden" name="postid" id="postid" value={comment.post} />
         </div>
@@ -95,6 +107,7 @@ export default function CommentForm({ postid, commentToEdit }) {
             Submit
           </button>
         </div>
+        {errMsg && <p className={style.errText}>{errMsg.msg}</p>}
       </form>
     );
   }
