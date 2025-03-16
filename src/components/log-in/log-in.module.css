@@ -44,3 +44,11 @@ form {
   filter: brightness(1.25);
   cursor: pointer;
 }
+
+.errText {
+  color: red;
+}
+
+.errInput {
+  border: 2px solid rgb(255, 0, 0);
+}

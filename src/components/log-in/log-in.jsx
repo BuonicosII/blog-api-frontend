@@ -5,6 +5,7 @@ import style from "./log-in.module.css";
 export default function LogIn() {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+  const [errMsg, setErrMsg] = useState();
 
   function formUpdate(e) {
     e.preventDefault();
@@ -14,6 +15,11 @@ export default function LogIn() {
       password: document.querySelector("#password").value,
       username: document.querySelector("#username").value,
     };
+
+    if (errMsg !== null) {
+      setErrMsg(null);
+    }
+
     setUser(newUser);
   }
 
@@ -28,14 +34,26 @@ export default function LogIn() {
       const res = await json.json();
 
       if (typeof res === "string") {
-        console.log(res);
-        alert("Something is wrong with the data, check console");
+        setErrMsg(res);
       } else {
         localStorage.setItem("token", JSON.stringify(res.token));
         navigate("/");
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  function errStyling(message, field) {
+    if (message === "Incorrect username" && field === "username") {
+      return style.errInput;
+    } else if (message === "Incorrect password" && field === "password") {
+      return style.errInput;
+    } else if (
+      message === "Missing credentials" &&
+      document.querySelector(`#${field}`).value.length === 0
+    ) {
+      return style.errInput;
     }
   }
 
@@ -52,7 +70,9 @@ export default function LogIn() {
                 name="username"
                 id="username"
                 value={user.username}
-                className={style.formInput}
+                className={
+                  style.formInput + " " + errStyling(errMsg, "username")
+                }
               />
             </div>
             <div className={style.divForm}>
@@ -63,12 +83,15 @@ export default function LogIn() {
                 id="password"
                 name="password"
                 value={user.password}
-                className={style.formInput}
+                className={
+                  style.formInput + " " + errStyling(errMsg, "password")
+                }
               />
             </div>
             <button type="submit" className={style.confirm}>
               Submit
             </button>
+            {errMsg && <p className={style.errText}>{errMsg}</p>}
           </form>
         </div>
       </div>
