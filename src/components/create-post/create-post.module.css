@@ -85,3 +85,9 @@ form {
 .errText {
   color: red;
 }
+
+@media screen and (max-width: 800px) {
+  .formHolder {
+    width: 100%;
+  }
+}

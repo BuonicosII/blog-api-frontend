@@ -147,3 +147,14 @@ main {
   flex-grow: 1;
   padding: 24px;
 }
+
+@media screen and (max-width: 800px) {
+  main {
+    grid-template-columns: 0px 1fr 1fr 1fr 0px;
+  }
+}
+
+header {
+  position: sticky;
+  top: 0px;
+}

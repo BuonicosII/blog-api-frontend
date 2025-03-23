@@ -6,10 +6,9 @@ import useMediaQuery from "../../UseMediaQuery";
 export default function Header() {
   const user = useLoaderData()[0];
   const [menuOpen, setMenuOpen] = useState(false);
-  const aspRatioMobile = useMediaQuery("(max-aspect-ratio: 1/1)");
   const maxWidMobile = useMediaQuery("(max-width: 800px)");
 
-  if (aspRatioMobile && maxWidMobile) {
+  if (maxWidMobile) {
     return (
       <header>
         <nav>
