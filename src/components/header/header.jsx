@@ -109,7 +109,7 @@ export default function Header() {
       </header>
     );
   } else {
-    setMenuOpen(false);
+    if (menuOpen) setMenuOpen(false);
     return (
       <header>
         <nav>
